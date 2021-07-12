@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_LOCATION" value="logs" />
+	<property name="LOG_NAME" value="logback-fabrica-back-aldesa.log" />
+	<property name="FORMAT_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} : %msg%n" />
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${FORMAT_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_LOCATION}/${LOG_NAME}</File>
+		
+		<encoder>
+			<pattern>${FORMAT_PATTERN}</pattern>
+		</encoder>
+		
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_LOCATION}/archived/${LOG_NAME}-%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+			<!-- total size of all archive files, if total size > 20GB, it will delete old archived file -->
+			<totalSizeCap>20GB</totalSizeCap>
+			<!-- 30 days to keep -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		
+	</appender>
+
+	<root level="warn">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+	<!-- Application logs level -->
+	<logger name="pe.com.fabrica.aldesa" level="debug" additivity="false">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</logger>
+
+</configuration>
